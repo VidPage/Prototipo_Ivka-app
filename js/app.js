@@ -86,12 +86,9 @@ const totalPasses =
 document.getElementById("earnings")
 .innerHTML = `$${totalEarnings}`;
 
-document.getElementById("passes")
-.innerHTML = totalPasses;
+document.getElementById("passes").innerHTML = totalPasses;
 
-document.getElementById("activeTurnstiles")
-.innerHTML =
-turnstiles.filter(t=>t.status==="En línea").length;
+document.getElementById("activeTurnstiles").innerHTML = turnstiles.filter(t=>t.status==="En línea").length + "/" + turnstiles.length;
 
 document.getElementById("avgFare")
 .innerHTML =
@@ -613,4 +610,7 @@ turnstiles.forEach(item=>{
 });
 
 // SIDEBAR COLLAPSE INIT
-document.body.classList.add("sidebar-collapsed");
+// SIDEBAR COLLAPSE SOLO DESKTOP
+if(window.innerWidth > 700){
+  document.body.classList.add("sidebar-collapsed");
+}

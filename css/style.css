@@ -1045,3 +1045,59 @@ body.sidebar-collapsed .sidebar:hover .logo{
   gap:10px;
 }
 
+/* MOBILE SIDEBAR FIX */
+
+@media (max-width: 700px){
+
+  body{
+    flex-direction:column;
+  }
+
+  /* quitar modo colapsado */
+  body.sidebar-collapsed .sidebar{
+    width:100%;
+  }
+
+  body.sidebar-collapsed .logo-text,
+  body.sidebar-collapsed .menu a span{
+    display:inline;
+  }
+
+  body.sidebar-collapsed .menu a{
+    justify-content:flex-start;
+  }
+
+  body.sidebar-collapsed .logo{
+    justify-content:flex-start;
+  }
+
+  /* sidebar móvil */
+  .sidebar{
+    width:100%;
+    padding:16px;
+    gap:20px;
+  }
+
+  /* menú visible */
+  .menu{
+    display:flex;
+    flex-direction:row;
+    overflow-x:auto;
+    gap:10px;
+    width:100%;
+    padding-bottom:4px;
+  }
+
+  .menu a{
+    min-width:max-content;
+    padding:12px 16px;
+    border-radius:12px;
+    white-space:nowrap;
+  }
+
+  /* quitar hover expand */
+  body.sidebar-collapsed .sidebar:hover{
+    width:100%;
+  }
+
+}
