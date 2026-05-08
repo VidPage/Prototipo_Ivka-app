@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>IVKA APP</title>
+
+  <!-- FONT AWESOME -->
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- LEAFLET -->
+  <link rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="logo">
+
+        <div class="logo-image">
+        <img
+        src="img/logo.png"
+        alt="IVKA Logo">
+        </div>
+
+        <div class="logo-text">
+        <h2>ACCESOS IVKA</h2>
+        <span>Control Center</span>
+        </div>
+
+    </div>
+
+    <nav class="menu">
+
+      <a href="#" class="active" data-section="dashboard">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Dashboard</span>
+      </a>
+
+      <a href="#" data-section="mapSection">
+        <i class="fa-solid fa-map-location-dot"></i>
+        <span>Mapa</span>
+      </a>
+
+      <a href="#" data-section="chartsSection">
+        <i class="fa-solid fa-chart-column"></i>
+        <span>Estadísticas</span>
+      </a>
+
+      <a href="#" data-section="individualMetricsSection">
+        <i class="fa-solid fa-sliders"></i>
+        <span>Torniquetes</span>
+      </a>
+
+    </nav>
+
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar" id="dashboard">
+
+      <div>
+        <h1>IVKA APP</h1>
+        <p>Monitoreo inteligente en tiempo real</p>
+      </div>
+
+      <div class="datetime">
+        <span id="date"></span>
+        <strong id="time"></strong>
+      </div>
+
+    </header>
+
+    <!-- METRICS -->
+    <section class="metrics-grid">
+
+      <div class="metric-card green">
+
+        <div class="metric-icon">
+          <i class="fa-solid fa-dollar-sign"></i>
+        </div>
+
+        <div>
+          <span>Ganancias Hoy</span>
+          <h2 id="earnings">$0</h2>
+        </div>
+
+      </div>
+
+      <div class="metric-card blue">
+
+        <div class="metric-icon">
+          <i class="fa-solid fa-users"></i>
+        </div>
+
+        <div>
+          <span>Pasos Totales</span>
+          <h2 id="passes">0</h2>
+        </div>
+
+      </div>
+
+      <div class="metric-card purple">
+
+        <div class="metric-icon">
+          <i class="fa-solid fa-tower-cell"></i>
+        </div>
+
+        <div>
+          <span>Activos</span>
+          <h2 id="activeTurnstiles">0</h2>
+        </div>
+
+      </div>
+
+      <div class="metric-card orange">
+
+        <div class="metric-icon">
+          <i class="fa-solid fa-ticket"></i>
+        </div>
+
+        <div>
+          <span>Tarifa Promedio</span>
+          <h2 id="avgFare">$0</h2>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- CONTENT -->
+    <section class="content-grid">
+
+      <!-- MAP -->
+      <div class="map-card" id="mapSection">
+
+        <div class="section-header">
+          <h3>Mapa de Ubicaciones</h3>
+        </div>
+
+        <div id="map"></div>
+
+      </div>
+
+      <!-- TURNSTILES -->
+      <div class="turnstiles-card" id="turnstilesSection">
+
+        <div class="section-header">
+          <h3>Torniquetes</h3>
+        </div>
+
+        <div id="turnstileList"></div>
+
+      </div>
+
+    </section>
+
+    <!-- CHARTS -->
+    <section class="charts-grid" id="chartsSection">
+
+      <div class="chart-card">
+
+        <h3>Ganancias Semanales</h3>
+
+        <canvas id="earningsChart"></canvas>
+
+      </div>
+
+      <div class="chart-card">
+
+        <h3>Pasos Semanales</h3>
+
+        <canvas id="passesChart"></canvas>
+
+      </div>
+
+    </section>
+
+    <section class="individual-section" id="individualMetricsSection">
+
+        <div class="section-header">
+            <h3>Métricas Individuales por Torniquete</h3>
+        </div>
+
+        <div id="individualMetrics"></div>
+
+    </section>
+
+    </main>
+
+    <!-- MODAL -->
+    <div class="modal-overlay hidden" id="configModal">
+
+        <div class="modal">
+
+            <div class="modal-header">
+
+                <div>
+                    <h2>Configuración</h2>
+                    <span id="modalTitle"></span>
+                </div>
+
+                <button id="closeModal">
+                <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="config-grid">
+
+                    <div class="form-group">
+                        <label>Tarifa Actual</label>
+                        <input type="number" id="fareInput">
+                        <small>Costo por uso del baño</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tiempo de Paso</label>
+                        <input type="number" id="timeInput">
+                        <small>Segundos para permitir el paso</small>
+                    </div>
+
+                </div>
+
+                <div class="modal-section">
+
+                    <h3>Información del Dispositivo</h3>
+
+                    <div class="device-grid">
+
+                    <div class="device-card">
+                        <span>ID del Dispositivo</span>
+                        <strong id="deviceId"></strong>
+                    </div>
+
+                    <div class="device-card">
+                        <span>Estado</span>
+                        <strong id="deviceStatus"></strong>
+                    </div>
+
+                    <div class="device-card">
+                        <span>Ubicación</span>
+                        <strong id="deviceAddress"></strong>
+                    </div>
+
+                    <div class="device-card">
+                        <span>Coordenadas</span>
+                        <strong id="deviceCoords"></strong>
+                    </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-section">
+
+                    <h3>Acciones Rápidas</h3>
+
+                    <div class="quick-actions">
+
+                    <button class="action-btn" onclick="runDiagnostic()">
+                        <div class="action-icon blue-bg">
+                        <i class="fa-solid fa-stethoscope"></i>
+                        </div>
+                        <div>
+                        <strong>Ejecutar Diagnóstico</strong>
+                        <p>Verificar estado del sistema</p>
+                        </div>
+                    </button>
+
+                    <button class="action-btn" onclick="syncDate()">
+                        <div class="action-icon green-bg">
+                        <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <div>
+                        <strong>Sincronizar Fecha/Hora</strong>
+                        <p>Actualizar reloj del dispositivo</p>
+                        </div>
+                    </button>
+
+                    <button class="action-btn" onclick="resetCounters()">
+                        <div class="action-icon orange-bg">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        </div>
+                        <div>
+                        <strong>Restablecer Contadores</strong>
+                        <p>Resetear pasos y ganancias</p>
+                        </div>
+                    </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="cancel" id="cancelModal">
+                    Cancelar
+                </button>
+                <button class="save">
+                    Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+    
+  <!-- CHARTJS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- LEAFLET -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- JS -->
+  <script src="js/app.js"></script>
+
+</body>
+
+</html>
